@@ -1,0 +1,22 @@
+version: '3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules
+      - .:/app
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      # ensures that node_modules are not mapped?
+      - /app/node_modules
+      # maps local cwd to /app on container
+      - .:/app
+    # overrides startup command in the dockerfile.dev file
+    command: ["npm", "run", "test"]
